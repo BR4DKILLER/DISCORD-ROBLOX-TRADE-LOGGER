@@ -41,7 +41,7 @@ try:
     if GithubVersion.status_code != 200:
         raise('Version Response Returned {code}'.format(code=str(GithubVersion.status_code)))
     else:
-        if GithubVersion > Version:
+        if int(GithubVersion.text) > Version:
             print('Your version is out of date, features may be unstable or buggy.')
             print('Download the new version here: https://github.com/BR4DKILLER/DISCORD-ROBLOX-TRADE-LOGGER')
             print('You may also press any button to continue with your current version.')
@@ -80,7 +80,7 @@ def ValidHook(Webhook):
     except:
         return False, 'Invalid'
     try:
-        data = data.json()['token']
+        token = data.json()['token']
         return True, 'Valid'
     except:
         return False, 'Invalid'
@@ -100,7 +100,7 @@ def UpdateRolimonsValues():
     except Exception as err:
         return False, 'Update Value Function Returned An Error: {error}'.format(error=str(err))
 
-def CreateEmbed(Data):
+def CreateEmbedI(Data):
     Example = {
         "content": None,
         "embeds": [
@@ -129,6 +129,60 @@ def CreateEmbed(Data):
             ],
             "author": {
                 "name": "Trade Inbound - (ID: {id})"
+            },
+            "image": {
+                "url": "{image}"
+            }
+            }
+        ],
+        "attachments": []
+    }
+
+    try:
+        Example['embeds'][0]['title'] = Example['embeds'][0]['title'].format(username = Data['Username'], display_name = Data['DisplayName'])
+        Example['embeds'][0]['url'] = Example['embeds'][0]['url'].format(profile_url = Data['ProfileURL'])
+
+        Example['embeds'][0]['image']['url'] = Example['embeds'][0]['image']['url'].format(image = Data['BiggestUrl'])
+        Example['embeds'][0]['author']['name'] = Example['embeds'][0]['author']['name'].format(id = Data['TradeID'])
+
+        Example['embeds'][0]['fields'][0]['value'] = Example['embeds'][0]['fields'][0]['value'].format(items_give = Data['formatted_give'])
+        Example['embeds'][0]['fields'][1]['value'] = Example['embeds'][0]['fields'][1]['value'].format(items_recieve = Data['formatted_recieve'])
+        Example['embeds'][0]['fields'][2]['value'] = Example['embeds'][0]['fields'][2]['value'].format(profit = Data['Profit'])
+        Example['embeds'][0]['fields'][3]['value'] = Example['embeds'][0]['fields'][3]['value'].format(biggest = Data['Biggest'])
+    except Exception as DebugError:
+        return False, 'Error while formatting embed JSON: {d}'.format(d=str(DebugError))
+
+    return True, Example
+
+def CreateEmbedO(Data):
+    Example = {
+        "content": None,
+        "embeds": [
+            {
+            "title": "Trade Sent to {username} (@{display_name})",
+            "description": "[Roblox Trades Hyperlink](https://www.roblox.com/trades)",
+            "url": "{profile_url}",
+            "color": Data['color'],
+            "fields": [
+                {
+                "name": "You:",
+                "value": "{items_give}"
+                },
+                {
+                "name": "Them:",
+                "value": "{items_recieve}"
+                },
+                {
+                "name": "Profit Margin:",
+                "value": "{profit}"
+                },
+                {
+                "name": "Biggest Item:",
+                "value": "{biggest}"
+                }
+            ],
+            "author": {
+                "name": "Trade Outbound - (ID: {id})"
             },
             "image": {
                 "url": "{image}"
@@ -291,7 +345,7 @@ def Main():
                 ID = str(Trade['TradeID'])
                 Checked = CheckedTrades[ID]
                 if Checked:
-                    print('{id} Was already checked, skipping...'.format(id=Trade['TradeID']))
+                    print('inbound trade {id} Was already checked, skipping...'.format(id=Trade['TradeID']))
                     continue
             except:
                 CheckedTrades[ID] = True
@@ -299,13 +353,45 @@ def Main():
                             
             Success, TradeData = GetTradeData(Trade)
             if Success:
-                Success, Embed = CreateEmbed(TradeData)
+                Success, Embed = CreateEmbedI(TradeData)
                 if not Success:
                     print('Error while curating the embed data for webhook: {error}'.format(error=Embed))
                 else:
                     requests.post(Settings['inboundwebhook'],headers={"Content-Type":"Application/JSON"},json=Embed)
             else:
                 print('Error while getting Trade Data for Trade {id}: {error}'.format(id=Trade['TradeID'],error=TradeData))
+
+    print(' ')
+    print('Finished Checking Inbound Trades!')
+    print(' ')
+    print('Checking Outbound Trades!')
+    print(' ')
+    Success, OutboundTrades = GetOutboundTrades()
+    if not Success:
+        return False, 'Error while retrieving outbound trades from function: {d}'.format(d=OutboundTrades)
+    else:
+        for Trade in OutboundTrades:
+            try:
+                ID = str(Trade['TradeID'])
+                Checked = CheckedTrades[ID]
+                if Checked:
+                    print('outbound trade {id} Was already checked, skipping...'.format(id=Trade['TradeID']))
+                    continue
+            except:
+                CheckedTrades[ID] = True
+                pass
+                            
+            Success, TradeData = GetTradeData(Trade)
+            if Success:
+                Success, Embed = CreateEmbedO(TradeData)
+                if not Success:
+                    print('Error while curating the embed data for webhook: {error}'.format(error=Embed))
+                else:
+                    requests.post(Settings['outboundwebhook'],headers={"Content-Type":"Application/JSON"},json=Embed)
+            else:
+                print('Error while getting Trade Data for Trade {id}: {error}'.format(id=Trade['TradeID'],error=TradeData))
+    print(' ')
+    print('Finished Checking Outbound Trades!')
 
     
 
@@ -437,6 +523,7 @@ Valid, Message = ValidHook(Settings['inboundwebhook'])
 
 if not Valid:
     print('Your saved inbound webhook is invalid, please input a new webhook')
+    print('If you think this is an error, restart the program! There can be false positives.')
     iwebhook = input('Please enter your inbound webhook: ')
     while True:
         Success, Message = ValidHook(iwebhook)
@@ -453,6 +540,7 @@ Valid, Message = ValidHook(Settings['outboundwebhook'])
 
 if not Valid:
     print('Your saved inbound webhook is invalid, please input a new webhook')
+    print('If you think this is an error, restart the program! There can be false positives.')
     owebhook = input('Please enter your outbound webhook: ')
     while True:
         Success, Message = ValidHook(owebhook)
@@ -478,8 +566,8 @@ if __name__ == '__main__':
 
             Running every {delay} seconds, logging your trades!
             Created by BR4DKILLER on ROBLOX! (https://www.roblox.com/users/3657107776/profile)
-            Version: {version}                                                                                
-        '''.format(delay=str(Settings['delay'])))
+            Build Version: V{version}                                                                                
+        '''.format(delay=str(Settings['delay']),version=Version))
         try:
             Main()
         except Exception as CriticalError:
