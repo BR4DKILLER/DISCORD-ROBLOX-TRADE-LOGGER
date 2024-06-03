@@ -9,8 +9,8 @@ Install the latest python version from [python.org](https://python.org) and down
 ## How to obtain your .ROBLOSECURITY
 
 - Login to the Roblox Website and Open Developer tools, (or Inspect Element)
-- Go to the application tab, as seen below:
-- ![image](https://github.com/BR4DKILLER/DISCORD-ROBLOX-TRADE-LOGGER/assets/92213007/d3be8645-d83e-4db7-95f7-ab4f36d7ef05)
-- Then go to Storage > Cookies > https://www.roblox.com/ > .ROBLOSECURITY then left click, edit value, ctrl + a (or select all) then ctrl + c (or copy).
-- ![image](https://github.com/BR4DKILLER/DISCORD-ROBLOX-TRADE-LOGGER/assets/92213007/25add182-acfe-462f-89c9-807b30cd3c61)
-- ![image](https://github.com/BR4DKILLER/DISCORD-ROBLOX-TRADE-LOGGER/assets/92213007/5853f58e-341e-4f2d-af89-cf8aeec51d22)
+- Go to the application tab, as seen below:<br/>
+![image](https://github.com/BR4DKILLER/DISCORD-ROBLOX-TRADE-LOGGER/assets/92213007/d3be8645-d83e-4db7-95f7-ab4f36d7ef05)
+- Then go to Storage > Cookies > https://www.roblox.com/ > .ROBLOSECURITY then left click, edit value, ctrl + a (or select all) then ctrl + c (or copy)<br/>
+![image](https://github.com/BR4DKILLER/DISCORD-ROBLOX-TRADE-LOGGER/assets/92213007/25add182-acfe-462f-89c9-807b30cd3c61)<br/>
+![image](https://github.com/BR4DKILLER/DISCORD-ROBLOX-TRADE-LOGGER/assets/92213007/5853f58e-341e-4f2d-af89-cf8aeec51d22)
