@@ -253,7 +253,7 @@ def GetInboundTrades():
                 Inbound.append({
                   "Username": User['name'],
                   "DisplayName": User['displayName'],
-                  "ProfileURL": "https://wwww.roblox.com/users/{user_id}/profile".format(user_id=User['id']),
+                  "ProfileURL": "https://www.roblox.com/users/{user_id}/profile".format(user_id=User['id']),
                   "TradeID": TradeID
                 })
             return True, Inbound
@@ -276,7 +276,7 @@ def GetOutboundTrades():
                 Outbound.append({
                   "Username": User['name'],
                   "DisplayName": User['displayName'],
-                  "ProfileURL": "https://wwww.roblox.com/users/{user_id}/profile".format(user_id=User['id']),
+                  "ProfileURL": "https://www.roblox.com/users/{user_id}/profile".format(user_id=User['id']),
                   "TradeID": TradeID
                 })
             return True, Outbound
@@ -336,6 +336,12 @@ def Main():
     
     WriteSettings('__trades__.json', CheckedTrades)
 
+    print(' ')
+    print('====================================================')
+    print('                   INBOUND TRADES                   ')
+    print('====================================================')
+    print(' ')
+
     Success, InboundTrades = GetInboundTrades()
     if not Success:
         return False, 'Error while retrieving inbound trades from function: {d}'.format(d=InboundTrades)
@@ -362,10 +368,11 @@ def Main():
                 print('Error while getting Trade Data for Trade {id}: {error}'.format(id=Trade['TradeID'],error=TradeData))
 
     print(' ')
-    print('Finished Checking Inbound Trades!')
+    print('======================================================')
+    print('                   OUTBOUND TRADES                   ')
+    print('======================================================')
     print(' ')
-    print('Checking Outbound Trades!')
-    print(' ')
+
     Success, OutboundTrades = GetOutboundTrades()
     if not Success:
         return False, 'Error while retrieving outbound trades from function: {d}'.format(d=OutboundTrades)
@@ -391,7 +398,10 @@ def Main():
             else:
                 print('Error while getting Trade Data for Trade {id}: {error}'.format(id=Trade['TradeID'],error=TradeData))
     print(' ')
-    print('Finished Checking Outbound Trades!')
+    print('=====================================================')
+    print('         CHECKS COMPLETE, WAITING DELAY TIME         ')
+    print('=====================================================')
+    print(' ')
 
     
 
