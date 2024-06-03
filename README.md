@@ -13,5 +13,7 @@ Install the latest python version from [python.org](https://python.org) and down
 ![image](https://github.com/BR4DKILLER/DISCORD-ROBLOX-TRADE-LOGGER/assets/92213007/d3be8645-d83e-4db7-95f7-ab4f36d7ef05)
 - Then go to Storage > Cookies > https://www.roblox.com/ > .ROBLOSECURITY<br/>
 ![image](https://github.com/BR4DKILLER/DISCORD-ROBLOX-TRADE-LOGGER/assets/92213007/25add182-acfe-462f-89c9-807b30cd3c61)<br/>
-- after finding the .ROBLOSECURITY left click, press "edit value" and copy the cookie below:<br/>
+- after finding the .ROBLOSECURITY Cookie left click, press "edit value" and copy the cookie below:<br/>
 ![image](https://github.com/BR4DKILLER/DISCORD-ROBLOX-TRADE-LOGGER/assets/92213007/5853f58e-341e-4f2d-af89-cf8aeec51d22)
+
+**IF YOU STILL NEED HELP, TRY THIS VIDEO: https://www.youtube.com/watch?v=zkSnBV7oOZM&ab_channel=EdoVitalboy**
